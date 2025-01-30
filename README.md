@@ -92,7 +92,9 @@ my_cleaning_robot/
            "start_y": 0,
            "actions": [
              {"direction":"east","steps":2},
-             {"direction":"south","steps":1}
+             {"direction":"south","steps":2},
+             {"direction":"west","steps":2},
+             {"direction":"north","steps":2}
            ],
            "premium": false
          }'

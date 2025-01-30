@@ -1,4 +1,3 @@
-
 """
 A FastAPI application that:
 1) Reads a map from .txt or .json (in memory).
@@ -10,7 +9,7 @@ Run it via: uvicorn main_csv_file:app --reload
 """
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, Body
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import JSONResponse, FileResponse, StreamingResponse
 import json
 import time
 import os
@@ -29,7 +28,7 @@ map_data = {}
 map_rows = 0
 map_cols = 0
 
-# We'll store session logs in a CSV file instead of in memory
+# We'll store session logs in a CSV file
 HISTORY_FILE = "session_history.csv"
 
 # In-memory session counter for new sessions
@@ -217,12 +216,24 @@ def get_history():
     """
     Download the session_history.csv file with all past sessions.
     Returns 404 if no sessions exist.
+    Includes a header row in the downloaded file.
     """
     if not os.path.exists(HISTORY_FILE):
         raise HTTPException(status_code=404, detail="No session history found.")
 
-    return FileResponse(
-        HISTORY_FILE,
+    # Define the header
+    header = CSV_HEADER = ["id", "start_time", "end_time", "final_state", "actions_count", "tiles_cleaned", "duration_seconds"]
+
+    def generate_csv_with_header():
+        # Yield the header
+        yield ",".join(header) + "\n"
+        # Open the existing CSV and yield its contents
+        with open(HISTORY_FILE, "r", newline="", encoding="utf-8") as f:
+            for line in f:
+                yield line
+
+    return StreamingResponse(
+        generate_csv_with_header(),
         media_type="text/csv",
-        filename="session_history.csv"
+        headers={"Content-Disposition": "attachment; filename=session_history.csv"}
     )
