@@ -8,12 +8,11 @@ This project implements a **Cleaning Robot** REST application in Python using **
 2. [Project Structure](#project-structure)  
 3. [Setup Instructions](#setup-instructions)  
 4. [Running the Application](#running-the-application)  
-5. [Experimenting With the API](#experimenting-with-the-api)  
-6. [Example Endpoints](#example-endpoints)  
-7. [Notes](#notes)  
-8. [Troubleshooting](#troubleshooting)  
-9. [License](#license)  
-10. [Contact](#contact)  
+5. [Example Endpoints](#example-endpoints)  
+6. [Notes](#notes)  
+7. [Troubleshooting](#troubleshooting)  
+8. [License](#license)  
+9. [Contact](#contact)  
 
 ---
 
@@ -132,4 +131,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-For any queries or support, please contact [your.email@example.com](mailto:your.email@example.com).
+For any queries or support, please contact [petros.polydorou@outlook.com](mailto:petros.polydorou@outlook.com).
