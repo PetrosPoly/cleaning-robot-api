@@ -6,6 +6,7 @@ various/
 
 # Ignore Python cache files
 __pycache__/
+__pycache__/main.cpython-38.pyc
 *.pyc
 
 # Ignore IDE-specific files

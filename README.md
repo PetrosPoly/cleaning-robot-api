@@ -44,10 +44,10 @@ my_cleaning_robot/
 
    ```bash
    # Create a virtual environment named 'venv'
-   python -m venv venv
+   python3 -m venv restapi
 
    # Activate the virtual environment (Linux/Mac)
-   source venv/bin/activate
+   source restapi/bin/activate
    ```
 
 2. **Install Required Dependencies**
