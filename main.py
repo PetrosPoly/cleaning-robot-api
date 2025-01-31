@@ -1,3 +1,4 @@
+
 """
 A FastAPI application that:
 1) Reads a map from .txt or .json (in memory).
@@ -28,7 +29,7 @@ map_data = {}
 map_rows = 0
 map_cols = 0
 
-# We'll store session logs in a CSV file
+# We'll store session logs in a CSV file instead of in memory
 HISTORY_FILE = "session_history.csv"
 
 # In-memory session counter for new sessions
@@ -216,24 +217,25 @@ def get_history():
     """
     Download the session_history.csv file with all past sessions.
     Returns 404 if no sessions exist.
-    Includes a header row in the downloaded file.
     """
     if not os.path.exists(HISTORY_FILE):
         raise HTTPException(status_code=404, detail="No session history found.")
 
-    # Define the header
-    header = CSV_HEADER = ["id", "start_time", "end_time", "final_state", "actions_count", "tiles_cleaned", "duration_seconds"]
+    # Define your header as a single CSV line
+    HEADER = "id,start_time,end_time,final_state,actions_count,tiles_cleaned,duration_seconds\n"
 
     def generate_csv_with_header():
-        # Yield the header
-        yield ",".join(header) + "\n"
-        # Open the existing CSV and yield its contents
+        # 1) Yield the header first
+        yield HEADER
+        # 2) Then read from the existing CSV file and yield its lines
         with open(HISTORY_FILE, "r", newline="", encoding="utf-8") as f:
             for line in f:
-                yield line
+                yield line  # Reads each line from session_history.csv and yields it to the client.
 
-    return StreamingResponse(
+    # Return a StreamingResponse which combines header + file content
+    return StreamingResponse(  # StreamingResponse: dynamically add the header row
         generate_csv_with_header(),
         media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=session_history.csv"}
+        headers={"Content-Disposition": "attachment; filename=session_history.csv"}  # Content-Disposition header forces the browser to download the file
     )
+
